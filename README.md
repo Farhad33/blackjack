@@ -1,22 +1,20 @@
 ## Description
 
-_Provide a brief, high-level overview of what the final product (artifact) of this goal is. Include any relevant resources or dependencies here._
+We are going to make a Black Jack web interface game using React. 
 
 ## Context
 
-_Why is this goal important? How is it useful? What questions will it raise?_
+It helps to improve javascript and React skills.
 
 ## Specifications
 
-_List of specifications (specs) for the completed goal. These are declarative sentences (statements) describing some quality or behavior of the final product._
 
 - [ ] Multiple local players
 - [ ] Multiple AI players
 - [ ] AI Dealer
-- [ ] Split your bet
-- [ ] Double your bet
-- [ ] Inssurance
-- [ ] Surrender
+- [ ] Web interface, using React
+- [ ] Game state saved in local storage
+- [ ] Cards flip over
 - [X] The artifact produced is properly licensed, preferably with the [MIT license][mit-license].
 
 ---
