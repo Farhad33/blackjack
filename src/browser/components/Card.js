@@ -3,7 +3,7 @@ import './Card.sass';
 import cardback from '../images/cardback.png';
 import cardImages from '../images/cards';
 
-class Card extends Component {
+export default class Card extends Component {
   static propTypes = {
     suit: React.PropTypes.string.isRequired,
     rank: React.PropTypes.string.isRequired,
@@ -11,7 +11,7 @@ class Card extends Component {
   }
 
   static defaultProps = {
-    faceDown: false
+    faceDown: false        // faceState ???
   }
 
   render() {
@@ -31,5 +31,3 @@ class Card extends Component {
     );
   }
 }
-
-export default Card;

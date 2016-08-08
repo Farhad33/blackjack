@@ -1,77 +1,23 @@
 import React, { Component } from 'react';
 import './App.sass';
-import Card from './components/Card'
+import BlackjackGame from './BlackjackGame'
+import BlackjackGameComponent from './components/BlackjackGame'
 
 class App extends Component {
+
   constructor(){
     super()
     this.state = {
-      cards: [
-        {
-          suit: "♠",
-          rank: "5",
-          faceDown: true,
-        },
-        {
-          suit: "♥",
-          rank: "ace",
-          faceDown: true,
-        },
-        {
-          suit: "♦",
-          rank: "king",
-          faceDown: true,
-        },
-        {
-          suit: "♣",
-          rank: "jack",
-          faceDown: true,
-        },
-        {
-          suit: "♠",
-          rank: "5",
-          faceDown: true,
-        },
-        {
-          suit: "♥",
-          rank: "ace",
-          faceDown: true,
-        },
-        {
-          suit: "♦",
-          rank: "king",
-          faceDown: true,
-        },
-        {
-          suit: "♣",
-          rank: "jack",
-          faceDown: true,
-        }
-      ]
+      game: new BlackjackGame(this.onGameChange.bind(this)),
     }
   }
 
-  flipCard(card, event){
-    event.preventDefault();
-    card.faceDown = !card.faceDown
+  onGameChange(){
     this.forceUpdate();
   }
 
   render() {
-    const cards = this.state.cards.map((card, index) =>
-      <Card
-        key={index}
-        suit={card.suit}
-        rank={card.rank}
-        faceDown={card.faceDown}
-        onClick={this.flipCard.bind(this, card)}
-      />
-    )
-    return (
-      <div>
-        {cards}
-      </div>
-    );
+    return <BlackjackGameComponent game={this.state.game}/>
   }
 }
 
