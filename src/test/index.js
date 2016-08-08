@@ -1,1 +1,1 @@
-require('./game_test')
+require('./BlackjackGameTest')
