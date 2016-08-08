@@ -1,6 +1,6 @@
 ## Description
 
-We are going to make a Black Jack web interface game using React. 
+We are going to make a Black Jack web interface game using React.
 
 ## Context
 
