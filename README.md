@@ -17,7 +17,7 @@ _List of specifications (specs) for the completed goal. These are declarative se
 - [ ] Double your bet
 - [ ] Inssurance
 - [ ] Surrender
-- [ ] The artifact produced is properly licensed, preferably with the [MIT license][mit-license].
+- [X] The artifact produced is properly licensed, preferably with the [MIT license][mit-license].
 
 ---
 
