@@ -19,9 +19,8 @@ class Card extends Component {
   render() {
     let className = "Card "+(this.props.faceDown ? 'Card-facedown' : 'Card-faceup')
     const key = `${this.props.rank}${this.props.suit}`
-    console.log(Object.keys(cardImages))
     return (
-      <div className={className}>
+      <div className={className} onClick={this.props.onClick}>
       	<div className="Card-flipper">
       		<div className="Card-front">
       			<img src={cardImages[key]} alt={key}/>

@@ -3,21 +3,73 @@ import './App.css';
 import Card from './components/Card'
 
 class App extends Component {
+  constructor(){
+    super()
+    this.state = {
+      cards: [
+        {
+          suit: "♠",
+          rank: "5",
+          faceDown: true,
+        },
+        {
+          suit: "♥",
+          rank: "ace",
+          faceDown: true,
+        },
+        {
+          suit: "♦",
+          rank: "king",
+          faceDown: true,
+        },
+        {
+          suit: "♣",
+          rank: "jack",
+          faceDown: true,
+        },
+        {
+          suit: "♠",
+          rank: "5",
+          faceDown: true,
+        },
+        {
+          suit: "♥",
+          rank: "ace",
+          faceDown: true,
+        },
+        {
+          suit: "♦",
+          rank: "king",
+          faceDown: true,
+        },
+        {
+          suit: "♣",
+          rank: "jack",
+          faceDown: true,
+        }
+      ]
+    }
+  }
+
+  flipCard(card, event){
+    event.preventDefault();
+    card.faceDown = !card.faceDown
+    this.forceUpdate();
+  }
+
   render() {
+    const cards = this.state.cards.map((card, index) => 
+      <Card 
+        key={index} 
+        suit={card.suit} 
+        rank={card.rank} 
+        faceDown={card.faceDown} 
+        onClick={this.flipCard.bind(this, card)}
+      />
+    )
     return (
       <div>
-        <div>
-          <Card suit="♠" rank="5"    />
-          <Card suit="♥" rank="ace"  />
-          <Card suit="♦" rank="king" />
-          <Card suit="♣" rank="jack" />
-        </div>
-        <div>
-          <Card suit="♠" rank="5"    faceDown/>
-          <Card suit="♥" rank="ace"  faceDown/>
-          <Card suit="♦" rank="king" faceDown/>
-          <Card suit="♣" rank="jack" faceDown/>
-        </div>
+        {cards}
       </div>
     );
   }
