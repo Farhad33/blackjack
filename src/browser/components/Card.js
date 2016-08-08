@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import './Card.css';
+import './Card.sass';
 import cardback from '../images/cardback.png';
 import cardImages from '../images/cards';
-
-
 
 class Card extends Component {
   static propTypes = {
@@ -11,7 +9,7 @@ class Card extends Component {
     rank: React.PropTypes.string.isRequired,
     faceDown: React.PropTypes.bool
   }
-  
+
   static defaultProps = {
     faceDown: false
   }

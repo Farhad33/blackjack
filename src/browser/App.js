@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.sass';
 import Card from './components/Card'
 
 class App extends Component {
@@ -58,12 +58,12 @@ class App extends Component {
   }
 
   render() {
-    const cards = this.state.cards.map((card, index) => 
-      <Card 
-        key={index} 
-        suit={card.suit} 
-        rank={card.rank} 
-        faceDown={card.faceDown} 
+    const cards = this.state.cards.map((card, index) =>
+      <Card
+        key={index}
+        suit={card.suit}
+        rank={card.rank}
+        faceDown={card.faceDown}
         onClick={this.flipCard.bind(this, card)}
       />
     )
