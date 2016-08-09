@@ -8,8 +8,14 @@ class App extends Component {
   constructor(){
     super()
     this.state = {
-      game: new BlackjackGame(this.onGameChange.bind(this)),
+      game: new BlackjackGame(),
     }
+  }
+
+  componentDidMount(){
+    // DEBUGGING
+    window.game = this.state.game;
+    this.state.game.onChange = this.onGameChange.bind(this)
   }
 
   onGameChange(){

@@ -3,6 +3,8 @@ import './Card.sass';
 import cardback from '../images/cardback.png';
 import cardImages from '../images/cards';
 
+
+
 export default class Card extends Component {
   static propTypes = {
     suit: React.PropTypes.string.isRequired,
@@ -16,7 +18,7 @@ export default class Card extends Component {
 
   render() {
     let className = "Card "+(this.props.faceDown ? 'Card-facedown' : 'Card-faceup')
-    const key = `${this.props.rank}${this.props.suit}`
+    const key = `${this.props.suit}${this.props.rank}`
     return (
       <div className={className} onClick={this.props.onClick}>
       	<div className="Card-flipper">

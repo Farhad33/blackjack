@@ -1,5 +1,7 @@
+import _ from 'lodash'
 import Card from './Card'
 
+// NOTE: Most games today use four, six, or eight decks.
 export default class Deck {
   constructor(){
     this.cards = [];
@@ -9,5 +11,11 @@ export default class Deck {
         this.cards.push(new Card(suit, rank))
       })
     })
+
+    _.shuffle(this.cards)
+  }
+
+  takeOne(){
+    return this.cards.shift();
   }
 }

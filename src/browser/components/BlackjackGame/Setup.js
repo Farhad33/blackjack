@@ -10,26 +10,26 @@ export default class Setup extends Component {
     this.addPlayer = this.addPlayer.bind(this)
   }
 
-  onNameChange(nameIndex, event){
+  addPlayer(){
+    this.props.game.addPlayer({
+      name: '',
+      wallet: 100,
+    })
+  }
+
+  removePlayer(playerIndex, event){
     event.preventDefault()
-    let { game } = this.props
-    game.playerNames.splice(nameIndex, 1, event.target.value)
-    game.setPlayerNames(game.playerNames)
+    this.props.game.removePlayer(playerIndex)
   }
 
-  addPlayer(event){
-    event.preventDefault();
-    let { game } = this.props
-    game.setPlayerNames(game.playerNames.concat(''))
-  }
-
-  removePlayer(nameIndex, event){
+  onNameChange(playerIndex, event){
     event.preventDefault()
-    let { game } = this.props
-    game.playerNames.splice(nameIndex, 1)
-    game.setPlayerNames(game.playerNames)
+    this.props.game.updatePlayer(playerIndex, {name: event.target.value})
   }
-
+  onWalletChange(playerIndex, event){
+    event.preventDefault()
+    this.props.game.updatePlayer(playerIndex, {wallet: event.target.value})
+  }
   onSubmit(event){
     event.preventDefault();
     const { game } = this.props
@@ -39,11 +39,12 @@ export default class Setup extends Component {
   render(){
     const { game } = this.props
 
-    const playerNameInputs = this.props.game.playerNames.map((name, index) => {
+    const players = this.props.game.players.map((player, index) => {
       return <div key={index}>
         <label>
           <strong>Player #{index}</strong>
-          <input type="text" value={name} onChange={this.onNameChange.bind(this, index)}/>
+          <input type="text" value={player.name} onChange={this.onNameChange.bind(this, index)}/>
+          <input type="number" value={player.wallet} onChange={this.onWalletChange.bind(this, index)}/>
           <button type="button" onClick={this.removePlayer.bind(this, index)} tabIndex="-1">X</button>
         </label>
       </div>
@@ -53,7 +54,7 @@ export default class Setup extends Component {
       <div>
         <button type="button" onClick={this.addPlayer}>Add Player</button>
       </div>
-      {playerNameInputs}
+      {players}
       <div>
         <input type="submit" value="Play" />
       </div>
