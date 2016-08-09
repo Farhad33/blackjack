@@ -39,7 +39,6 @@ const CardImages = {
   'ace♦': require('./ace_of_diamonds.svg'),
   'ace♥': require('./ace_of_hearts.svg'),
   'ace♠': require('./ace_of_spades.svg'),
-  'black_joker': require('./black_joker.svg'),
   'jack♣': require('./jack_of_clubs.svg'),
   'jack♦': require('./jack_of_diamonds.svg'),
   'jack♥': require('./jack_of_hearts.svg'),
@@ -52,7 +51,6 @@ const CardImages = {
   'queen♦': require('./queen_of_diamonds.svg'),
   'queen♥': require('./queen_of_hearts.svg'),
   'queen♠': require('./queen_of_spades.svg'),
-  'red_joker': require('./red_joker.svg'),
 }
 
 export default CardImages
