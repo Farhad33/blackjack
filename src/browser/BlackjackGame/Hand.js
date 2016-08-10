@@ -7,9 +7,18 @@ export default class Hand {
 
   value(){
     var total = 0
+
+    var numberOfAces = this.cards.filter(card => card.isAce()).length
+
     this.cards.forEach(card => {
       total += card.value
     })
+
+    while (total > 21 && numberOfAces > 0) {
+      total -= 10
+      numberOfAces -= 1
+    }
+
     return total;
   }
 

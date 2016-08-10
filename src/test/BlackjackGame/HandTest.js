@@ -25,6 +25,20 @@ describe.only('BlackjackGame.Hand', ()=>{
         new Card('king', '♥'),
       ]
       expect(hand.value()).to.equal(21)
+
+      hand.cards = [
+        new Card('2', '♥'),
+        new Card('ace', '♥'),
+        new Card('king', '♥'),
+      ]
+      expect(hand.value()).to.equal(13)
+
+      hand.cards = [
+        new Card('ace', '♥'),
+        new Card('ace', '♥'),
+        new Card('king', '♥'),
+      ]
+      expect(hand.value()).to.equal(12)
     })
   })
 
