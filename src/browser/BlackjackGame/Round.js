@@ -157,8 +157,14 @@ export default class Round {
       hand.result = 'push'
       hand.player.wallet += hand.bet
     })
+  }
 
-
-
+  cleanup(){
+    // put all the cards back in the deck
+    this.hands.concat([this.dealersHand]).forEach(hand => {
+      while (hand.cards.length > 0){
+        this.game.deck.cards.push(hand.cards.shift())
+      }
+    })
   }
 }

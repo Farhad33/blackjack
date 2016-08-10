@@ -52,6 +52,7 @@ export default class BlackjackGame {
 
   playAnotherRound(){
     if (!this.round.isOver) return this;
+    this.round.cleanup()
     this.prevRounds.push(this.round)
     this.round = new Round({game: this})
     this.onChange()
