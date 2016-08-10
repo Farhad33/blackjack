@@ -47,9 +47,10 @@ class Player extends Component {
   }
 }
 
+
 const Avatar = function(props){
   const height = 100, width = 100;
-  http://lorempixel.com/400/200/people/1/Dummy-Text/
+  // http://lorempixel.com/400/200/people/1/Dummy-Text/
   const src = `http://lorempixel.com/${height}/${width}/people/${props.name}`
   return <img src={src} height={height} width={width} />
 }

@@ -3,7 +3,7 @@ import sinon from 'sinon'
 import Card from 'browser/BlackjackGame/Card'
 import Hand from 'browser/BlackjackGame/Hand'
 
-describe.only('BlackjackGame.Hand', ()=>{
+describe('BlackjackGame.Hand', ()=>{
   it('should be a class', ()=>{
     expect(Hand).to.be.a('function')
     var hand = new Hand({})
@@ -37,6 +37,20 @@ describe.only('BlackjackGame.Hand', ()=>{
         new Card('ace', '♥'),
         new Card('ace', '♥'),
         new Card('king', '♥'),
+      ]
+      expect(hand.value()).to.equal(12)
+
+      hand.cards = [
+        new Card('king', '♥'),
+        new Card('ace', '♥'),
+        new Card('ace', '♥'),
+      ]
+      expect(hand.value()).to.equal(12)
+
+      hand.cards = [
+        new Card('ace', '♥'),
+        new Card('king', '♥'),
+        new Card('ace', '♥'),
       ]
       expect(hand.value()).to.equal(12)
     })
