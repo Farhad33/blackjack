@@ -4,4 +4,16 @@ export default class Hand {
     this.cards = options.cards || [];
     this.bet = options.bet || null;
   }
+
+  value(){
+    var total = 0
+    this.cards.forEach(card => {
+      total += card.value
+    })
+    return total;
+  }
+
+  isBust(){
+
+  }
 }

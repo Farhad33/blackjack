@@ -7,26 +7,9 @@ export default class Gameboard extends Component {
   static propTypes = {
     game: React.PropTypes.object.isRequired,
   }
-
-  constructor(){
-    super()
-    this.startRound = this.startRound.bind(this)
-  }
-
-  startRound(event){
-    event.preventDefault()
-    this.props.game.startRound();
-  }
-
   render(){
     const { game } = this.props
-    if (!game.round) {
-      var startRoundButton = <button
-        onClick={this.startRound}
-      >Start Round</button>
-    }
     return <div className="Gameboard">
-      {startRoundButton}
       <Dealer game={game} />
       <Players game={game} />
     </div>
@@ -48,8 +31,8 @@ class Players extends Component {
 class Player extends Component {
   render(){
     const { game, player } = this.props
-    const outThisRound = (game.round && game.round.outPlayers.includes(player))
-    if (game.round && !game.round.playerHasBet(player)){
+    const outThisRound = game.round.outPlayers.includes(player)
+    if (!game.round.playerHasBet(player)){
       var betForm = <BetForm player={player} />
     }
     let className = "Gameboard-player"
@@ -73,9 +56,8 @@ const Avatar = function(props){
 
 const Hands = function({ player }){
   const { game } = player
-  let hands = game.round ? game.round.handsForPlayer(player) : []
-  hands =  hands.map((hand, index)=>
-    <Hand key={index} hand={hand} />
+  let hands = game.round.handsForPlayer(player).map((hand, index)=>
+    <Hand key={index} game={game} hand={hand} />
   )
   return <div className="Gameboard-hands">
     {hands}
@@ -84,10 +66,37 @@ const Hands = function({ player }){
 
 class Hand extends Component {
   render(){
-    const { hand } = this.props
+    const { game, hand } = this.props
     return <div className="Gameboard-hand">
       <div><strong>Bet: </strong><Money dollars={hand.bet} /></div>
       <Cards cards={hand.cards} />
+      <HandActions game={game} hand={hand} />
+    </div>
+  }
+}
+
+class HandActions extends Component {
+  constructor(){
+    super()
+    this.hit = this.hit.bind(this)
+    this.stay = this.stay.bind(this)
+  }
+  hit(event){
+    event.preventDefault()
+    const { game, hand } = this.props
+    game.round.hitPlayer(hand.player)
+  }
+  stay(event){
+    event.preventDefault()
+    const { game, hand } = this.props
+    game.round.stayPlayer(hand.player)
+  }
+  render(){
+    const { game, hand } = this.props
+    if (game.round.currentHand() !== hand) return null
+    return <div className="Gameboard-hand-actions">
+      <button onClick={this.hit}>Hit</button>
+      <button onClick={this.stay}>Stay</button>
     </div>
   }
 }
@@ -136,7 +145,7 @@ const Dealer = function({game}){
 }
 
 const DealersHand = function({game}){
-  var cards = game.round ? game.round.dealersHand.cards : []
+  var cards = game.round.dealersHand.cards
 
   return <div className="Gameboard-DealersHand">
     <Cards cards={cards} />

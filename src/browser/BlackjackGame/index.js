@@ -48,13 +48,8 @@ export default class BlackjackGame {
 
     // TODO increase the size of the deck based on players.length
     this.deck = new Deck;
-    this.onChange()
-    return this;
-  }
-
-  startRound(){
     this.round = new Round({game: this})
-    this.onChange();
+    this.onChange()
     return this;
   }
 }

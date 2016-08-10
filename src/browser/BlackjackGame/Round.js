@@ -6,13 +6,11 @@ import Hand from './Hand'
 export default class Round {
   constructor(options){
     this.game = options.game;
-    this.game.players
-    this.game.dealer
-    this.game.deck
-    this.outPlayers = []
+
     this.dealersHand = new Hand({});
+    this.outPlayers = []
     this.hands = []
-    // this.phase = 'betting' // 'actions'
+    this.currentHandIndex = null;
 
     // collects bets AKA who is in the round
     // deal two cards to each Hand
@@ -38,7 +36,7 @@ export default class Round {
 
     if (this.allPlayersHaveBet()){
       this.dealTwoCardsToEachHand()
-      this.currentPlayer = this.game.players[0]
+      this.currentHandIndex = 0;
     }
 
     this.game.onChange()
@@ -67,4 +65,44 @@ export default class Round {
       this.dealersHand.cards.push(deck.takeOne())
     });
   }
+
+  currentHand(){
+    return this.currentHandIndex === null ?
+      false : this.hands[this.currentHandIndex]
+  }
+
+  isPlayersTurn(player){
+    var hand = this.currentHand()
+    return hand && hand.player === player
+  }
+
+  endPlayersTurn(){
+    this.currentHandIndex++
+    // if (this.currentHandIndex > this.hands.length)
+  }
+
+  hitPlayer(player){
+    if (!this.isPlayersTurn(player)){
+      throw new Error('illegal move')
+    }
+    var hand = this.currentHand()
+    hand.cards.push(this.game.deck.takeOne())
+
+    if (hand.isBust()){
+      this.endPlayersTurn()
+    }
+
+    this.game.onChange();
+    return this;
+  }
+
+  stayPlayer(player){
+    if (!this.isPlayersTurn(player)){
+      throw new Error('illegal move')
+    }
+    this.endPlayersTurn()
+    this.game.onChange();
+    return this;
+  }
+
 }
