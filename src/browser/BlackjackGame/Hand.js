@@ -23,6 +23,6 @@ export default class Hand {
   }
 
   isBust(){
-
+    return this.value() > 21
   }
 }

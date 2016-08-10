@@ -8,7 +8,7 @@ export default class Deck {
 
     Card.SUITS.forEach(suit => {
       Card.RANKS.forEach(rank => {
-        this.cards.push(new Card(suit, rank))
+        this.cards.push(new Card(rank, suit))
       })
     })
 

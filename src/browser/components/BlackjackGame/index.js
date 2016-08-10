@@ -1,3 +1,4 @@
+import './index.sass'
 import React, { Component } from 'react'
 import Setup from './Setup'
 import Gameboard from './Gameboard'
@@ -9,25 +10,12 @@ export default class BlackjackGame extends Component {
   }
 
   render() {
-
     const { game } = this.props
-
-    if (!game.setup){
-       return (
-        <div className="BlackjackGame">
-          <h1>BlackjackGame</h1>
-          <Setup game={game} />
-          <pre>{util.inspect(this.props.game)}</pre>
-        </div>
-      );
-    }else{
-      return (
-        <div className="BlackjackGame">
-          <h1>BlackjackGame</h1>
-          <Gameboard game={game} />
-          <pre>{util.inspect(this.props.game)}</pre>
-        </div>
-      );
-    }
+    const content = !game.setup ?
+      <Setup game={game} /> :
+      <Gameboard game={game} />
+    return <div className="BlackjackGame">
+      {content}
+    </div>
   }
 }

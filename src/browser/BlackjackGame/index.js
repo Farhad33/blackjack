@@ -8,13 +8,10 @@ export default class BlackjackGame {
   constructor(){
     this.setup = false;
     this.players = [];
+    this.prevRounds = [];
     this.roundIndex = 0;
     this.round = null; // current round
-    // // TEMP HACK TO SKIP SETUP
-    // this.setup = true;
-    // this.addPlayer({name: 'Jared', wallet: 120})
-    // this.addPlayer({name: 'Majid', wallet: 200})
-    // this.addPlayer({name: 'Devon', wallet: 130})
+    this.winnings = 0;
   }
 
   // set this function to get called back when this object changes
@@ -48,6 +45,14 @@ export default class BlackjackGame {
 
     // TODO increase the size of the deck based on players.length
     this.deck = new Deck;
+    this.round = new Round({game: this})
+    this.onChange()
+    return this;
+  }
+
+  playAnotherRound(){
+    if (!this.round.isOver) return this;
+    this.prevRounds.push(this.round)
     this.round = new Round({game: this})
     this.onChange()
     return this;

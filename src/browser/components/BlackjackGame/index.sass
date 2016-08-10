@@ -1,0 +1,66 @@
+.BlackjackGame
+  height: 100%
+  
+  .Gameboard
+    min-height: 100%
+    background-color: green
+    display: flex
+    flex-direction: column
+    min-height: 100%
+    padding: 20px
+
+    &-spacer
+      flex-grow: 1
+      flex-shrink: 1
+
+    &-players
+      display: flex
+      flex-direction: row
+      flex-wrap: nowrap
+      justify-content: space-around
+
+    &-dealer
+      text-align: center
+
+    &-pot
+      height: 100px
+
+    &-hands
+      min-height: 175px
+      margin-bottom: 10px
+
+    &-card-placeholder
+      width: 100px
+      height: 140px
+      border: 1px dotted black
+      border-radius: 5px
+
+    &-out-this-round
+      opacity: 0.5
+
+    &-DealersHand
+      position: relative
+      display: inline-block
+
+    &-hand
+      position: relative
+
+    &-hand-banner
+      position: absolute
+      bottom: 62px
+      left: 0
+      font-size: 73px
+      color: red
+      transform: rotate(-20deg)
+      text-shadow: 1px 1px 5px black
+
+    &-endgame-modal
+      position: fixed
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+      background-color: rgba(0,0,0,0.5)
+      display: flex
+      align-items: center
+      justify-content: center

@@ -18,7 +18,7 @@ export default class Card extends Component {
 
   render() {
     let className = "Card "+(this.props.faceDown ? 'Card-facedown' : 'Card-faceup')
-    const key = `${this.props.suit}${this.props.rank}`
+    const key = `${this.props.rank}${this.props.suit}`
     return (
       <div className={className} onClick={this.props.onClick}>
       	<div className="Card-flipper">

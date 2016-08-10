@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 
 export default class Setup extends Component {
@@ -12,7 +13,7 @@ export default class Setup extends Component {
 
   addPlayer(){
     this.props.game.addPlayer({
-      name: '',
+      name: generateRandomName(),
       wallet: 100,
     })
   }
@@ -60,4 +61,27 @@ export default class Setup extends Component {
       </div>
     </form>
   }
+}
+
+
+const generateRandomName = function(){
+  var names = [
+    "Runny", "Buttercup", "Dinky", "Stinky", "Crusty",
+    "Greasy","Gidget", "Cheesypoof", "Lumpy", "Wacky", "Tiny", "Flunky",
+    "Fluffy", "Zippy", "Doofus", "Gobsmacked", "Slimy", "Grimy", "Salamander",
+    "Oily", "Burrito", "Bumpy", "Loopy", "Snotty", "Irving", "Egbert",
+    "Waffer", "Lilly","Rugrat","Sand", "Fuzzy","Kitty",
+    "Puppy", "Snuggles","Rubber", "Stinky", "Lulu", "Lala", "Sparkle", "Glitter",
+    "Silver", "Golden", "Rainbow", "Cloud", "Rain", "Stormy", "Wink", "Sugar",
+    "Twinkle", "Star", "Halo", "Angel", "Snicker", "Buffalo", "Gross", "Bubble", "Sheep",
+    "Corset", "Toilet", "Lizard", "Waffle", "Kumquat", "Burger", "Chimp", "Liver",
+    "Gorilla", "Rhino", "Emu", "Pizza", "Toad", "Gerbil", "Pickle", "Tofu", 
+    "Chicken", "Potato", "Hamster", "Lemur", "Vermin",
+    "face", "dip", "nose", "brain", "head", "breath", 
+    "pants", "shorts", "lips", "mouth", "muffin", "butt", "bottom", "elbow", 
+    "honker", "toes", "buns", "spew", "kisser", "fanny", "squirt", "chunks", 
+    "brains", "wit", "juice", "shower"
+  ];
+
+  return _.sampleSize(names, 2).join(' ')
 }
