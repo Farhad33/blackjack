@@ -117,12 +117,29 @@ export default class Round {
   }
 
   dealersTurn(){
-    this.dealersHand.cards.push(this.game.deck.takeOne())
-    // while(!this.dealersHand.isBust()){
-    //   if (this.dealersHand.value() < 17){
+    const hand = this.dealersHand
 
-    //   }
-    // }
+    var activeHands = this.hands.filter(hand => !hand.isBust())
+    var biggestBetHand = _.sortBy(activeHands, hand => hand.bet).reverse()[0]
+    var minOponentValue = Hand.value(biggestBetHand.cards.slice(1)) + 1
+      // .map(hand => Hand.value(hand.cards.slice(1)) + 1)
+      // .sort().reverse()[0]
+
+    if (minOponentValue < 14) minOponentValue = 14
+
+    console.log('Dealer Logic', {
+      biggestBetHand: biggestBetHand,
+      minOponentValue: minOponentValue
+    })
+
+    while(!hand.isBust()){
+      if (hand.value() < minOponentValue){
+        // hit
+        hand.cards.push(this.game.deck.takeOne())
+      }else{
+        break
+      }
+    }
 
     this.endRound()
   }
