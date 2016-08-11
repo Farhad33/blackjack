@@ -9,12 +9,12 @@ It helps to improve javascript and React skills.
 ## Specifications
 
 
-- [ ] Multiple local players
+- [X] Multiple local players
 - [ ] Multiple AI players
 - [ ] AI Dealer
-- [ ] Web interface, using React
+- [X] Web interface, using React
 - [ ] Game state saved in local storage
-- [ ] Cards flip over
+- [X] Cards flip over
 - [X] The artifact produced is properly licensed, preferably with the [MIT license][mit-license].
 
 ---
