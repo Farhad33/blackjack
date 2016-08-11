@@ -166,5 +166,6 @@ export default class Round {
         this.game.deck.cards.push(hand.cards.shift())
       }
     })
+    this.game.deck.shuffle()
   }
 }

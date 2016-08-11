@@ -3,16 +3,25 @@ import Card from './Card'
 
 // NOTE: Most games today use four, six, or eight decks.
 export default class Deck {
-  constructor(){
+  constructor(numberOfPlayer){
+    if (typeof numberOfPlayer !== 'number') numberOfPlayer = 1;
+
     this.cards = [];
-
-    Card.SUITS.forEach(suit => {
-      Card.RANKS.forEach(rank => {
-        this.cards.push(new Card(rank, suit))
+    do {
+      Card.SUITS.forEach(suit => {
+        Card.RANKS.forEach(rank => {
+          this.cards.push(new Card(rank, suit))
+        })
       })
-    })
+      numberOfPlayer -= 2
+    }while(numberOfPlayer > 0)
 
+    this.shuffle();
+  }
+
+  shuffle(){
     _.shuffle(this.cards)
+    return this;
   }
 
   takeOne(){
