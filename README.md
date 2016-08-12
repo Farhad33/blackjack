@@ -2,6 +2,10 @@
 
 We are going to make a Black Jack web interface game using React.
 
+## Demo
+
+https://thawing-spire-35638.herokuapp.com/
+
 ## Context
 
 It helps to improve javascript and React skills.
