@@ -7,12 +7,12 @@ import Round from './Round'
 
 export default class BlackjackGame {
   constructor(){
-    this.setup = false;
-    this.players = [];
-    this.prevRounds = [];
-    this.roundIndex = 0;
-    this.round = null; // current round
-    this.winnings = 0;
+    // this.setup = false;
+    // this.players = [];
+    // this.prevRounds = [];
+    // this.roundIndex = 0;
+    // this.round = null; // current round
+    // this.winnings = 0;
     this.loadState()
   }
 
@@ -42,7 +42,7 @@ export default class BlackjackGame {
 
   loadState(){
     var state = localStorage['BlackjackGame']
-    if (!state) return
+    if (!state) return 
     state = JSON.parse(state)
     this.setup = state.setup
     this.players = state.players.map(playerState => {

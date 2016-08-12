@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.sass';
-import BlackjackGame from './BlackjackGame'
+import game from './game'
 import BlackjackGameComponent from './components/BlackjackGame'
 
 class App extends Component {
@@ -8,14 +8,13 @@ class App extends Component {
   constructor(){
     super()
     // DEBUGGING
-    window.game = new BlackjackGame();
+    window.game = game
     this.state = {
       game: game
     }
   }
 
   componentDidMount(){
-    
     this.state.game.onChange = this.onGameChange.bind(this)
   }
 
@@ -24,7 +23,10 @@ class App extends Component {
   }
 
   render() {
-    return <BlackjackGameComponent game={this.state.game}/>
+    return <BlackjackGameComponent 
+      game={this.state.game.state}
+      emit={game.emit}
+    />
   }
 }
 

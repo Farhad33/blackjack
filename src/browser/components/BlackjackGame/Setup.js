@@ -13,35 +13,49 @@ export default class Setup extends Component {
   }
 
   addHumanPlayer(){
-    this.props.game.addHumanPlayer({
+    this.props.emit({
+      type: 'addHumanPlayer',
       name: generateRandomName(),
       wallet: 100,
     })
   }
 
   addAiPlayer(){
-    this.props.game.addAiPlayer({
+    this.props.emit({
+      type: 'addAiPlayer',
       name: generateRandomName(),
       wallet: 100,
     })
   }
+
   removePlayer(playerIndex, event){
     event.preventDefault()
-    this.props.game.removePlayer(playerIndex)
+    this.props.emit({
+      type: 'removePlayer',
+      playerIndex: playerIndex,
+    })
   }
 
   onNameChange(playerIndex, event){
     event.preventDefault()
-    this.props.game.updatePlayer(playerIndex, {name: event.target.value})
+    this.props.emit({
+      type: 'updatePlayer',
+      playerIndex: playerIndex, 
+      updates: {name: event.target.value},
+    })
   }
   onWalletChange(playerIndex, event){
     event.preventDefault()
-    this.props.game.updatePlayer(playerIndex, {wallet: event.target.value})
+    this.props.emit({
+      type: 'updatePlayer',
+      playerIndex: playerIndex, 
+      updates: {wallet: event.target.value},
+    })
   }
+
   onSubmit(event){
     event.preventDefault();
-    const { game } = this.props
-    game.completeSetup()
+    this.props.emit({type: 'completeSetup'})
   }
 
   render(){

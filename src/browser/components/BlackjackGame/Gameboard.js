@@ -11,12 +11,12 @@ export default class Gameboard extends Component {
   render(){
     window.localStorage.setItem(1, this.props.game)
 
-    const { game } = this.props
+    const { emit, game } = this.props
     return <div className="Gameboard">
-      <Dealer game={game} />
+      <Dealer emit={emit} game={game} />
       <div className="Gameboard-spacer" />
-      <Players game={game} />
-      <EndgameModal game={game} />
+      <Players emit={emit} game={game} />
+      <EndgameModal emit={emit} game={game} />
     </div>
   }
 }
@@ -24,9 +24,9 @@ export default class Gameboard extends Component {
 
 class Players extends Component {
   render(){
-    const { game } = this.props
+    const { emit, game } = this.props
     const players = game.players.map((player, index) =>
-      <Player key={index} game={game} player={player} />
+      <Player key={index} emit={emit} game={game} player={player} />
     )
     return <div className="Gameboard-players">{players}</div>
   }
@@ -35,15 +35,16 @@ class Players extends Component {
 
 class Player extends Component {
   render(){
-    const { game, player } = this.props
-    const playerIsOut = game.round.playerIsOut(player)
-    if (!game.round.playerHasBet(player)){
-      var betForm = <BetForm player={player} />
+    const { emit, game, player } = this.props
+    const playerIsOut = game.round.playersOutThisRound.includes(player.id)
+    const playerHasBet = game.round.playersWhoHaveBet.includes(player.id)
+    if (!playerHasBet){
+      var betForm = <BetForm emit={emit} player={player} />
     }
     let className = "Gameboard-player"
     if (playerIsOut) className += ' Gameboard-out-this-round'
     return <div className={className}>
-      <Hands player={player} />
+      <Hands emit={emit} game={game} player={player} />
       <div>{betForm}</div>
       <div><Avatar name={player.name} /></div>
       <div><strong>{player.name}</strong></div>
@@ -60,10 +61,10 @@ const Avatar = function(props){
   return <img src={src} height={height} width={width} />
 }
 
-const Hands = function({ player }){
-  const { game } = player
-  let hands = game.round.handsForPlayer(player).map((hand, index)=>
-    <Hand key={index} game={game} hand={hand} />
+const Hands = function({ emit, game, player }){
+  // let hands = game.round.handsForPlayer(player).map((hand, index)=>
+  let hands = game.round.hands.filter(hand => hand.playerId === player.id).map((hand, index)=>
+    <Hand emit={emit} key={index} game={game} hand={hand} />
   )
   return <div className="Gameboard-hands">
     {hands}
@@ -72,13 +73,13 @@ const Hands = function({ player }){
 
 class Hand extends Component {
   render(){
-    const { game, hand } = this.props
-    const hideFirst = !game.round.isOver && game.round.currentHand() !== hand
+    const { emit, game, hand } = this.props
+    const hideFirst = false // !game.round.isOver && game.round.currentHand() !== hand
     return <div className="Gameboard-hand">
       <div><strong>Bet: </strong><Money dollars={hand.bet} /></div>
-      <div><strong>Value: </strong>{hand.value()}</div>
+      <div><strong>Value: </strong>{hand.value}</div>
       <Cards cards={hand.cards} hideFirst={hideFirst} />
-      <HandActions game={game} hand={hand} />
+      <HandActions emit={emit} game={game} hand={hand} />
       <HandBanner game={game} hand={hand} />
     </div>
   }
@@ -96,7 +97,7 @@ class HandBanner extends Component {
       }else if (hand.result === 'push'){
         banner = 'PUSH'
       }
-    }else if (hand.isBust()){
+    }else if (hand.isBust){
       banner = 'BUSTED'
     }
     return <div className="Gameboard-hand-banner">{banner}</div>
@@ -111,17 +112,23 @@ class HandActions extends Component {
   }
   hit(event){
     event.preventDefault()
-    const { game, hand } = this.props
-    game.round.hitHand(hand)
+    const { emit, hand } = this.props
+    emit({
+      type: 'hitHand',
+      handId: hand.id,
+    })
   }
   stay(event){
     event.preventDefault()
-    const { game, hand } = this.props
-    game.round.stayHand(hand)
+    const { emit, hand } = this.props
+    emit({
+      type: 'stayHand',
+      handId: hand.id,
+    })
   }
   render(){
     const { game, hand } = this.props
-    if (game.round.currentHand() !== hand) return null
+    if (game.round.actionHandId !== hand.id) return null
     return <div className="Gameboard-hand-actions">
       <button onClick={this.hit}>Hit</button>
       <button onClick={this.stay}>Stay</button>
@@ -154,8 +161,13 @@ class BetForm extends Component {
   placeBet(event){
     event.preventDefault()
     var bet = parseInt(this.refs.bet.value, 10)
-    var {player} = this.props
-    player.game.round.setPlayerBet(player, bet)
+    var { emit, player } = this.props
+    // player.game.round.setPlayerBet(player, bet)
+    emit({
+      type: 'setBetForPlayer',
+      bet: bet,
+      playerId: player.id,
+    })
   }
   render(){
     var {player} = this.props
@@ -176,10 +188,10 @@ const Dealer = function({game}){
 
 const DealersHand = function({game}){
   var hand = game.round.dealersHand
-  var busted = hand.isBust() ? 
+  var busted = hand.isBust ? 
     <div className="Gameboard-hand-banner">BUSTED</div> : null
 
-  var value = game.round.isOver ? <div><strong>Value: </strong>{hand.value()}</div> : null
+  var value = game.round.isOver ? <div><strong>Value: </strong>{hand.value}</div> : null
   return <div className="Gameboard-DealersHand">
     {value}
     <Cards cards={hand.cards} hideFirst={!game.round.isOver} />
