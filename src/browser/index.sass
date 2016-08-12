@@ -14,3 +14,21 @@ body
 
 body > #root
   height: 100%
+
+
+button, input[type="button"], input[type="submit"]
+  border: 1px solid black
+  border-radius: 5px
+  background-color: rgb(192, 192, 192)
+  &:focus
+    background-color: lightblue;
+    outline: none
+
+input[type="text"], input[type="number"]
+  border: 1px solid black
+  border-radius: 2px
+  background-color: white
+  padding: 2px
+  &:focus
+    background-color: lightblue;
+    outline: none

@@ -9,16 +9,29 @@ export default class Gameboard extends Component {
     game: React.PropTypes.object.isRequired,
   }
 
+  componentDidMount(){
+    this.focusFirstInput()
+  }
+  componentDidUpdate(){
+    this.focusFirstInput()
+  }
+
+  focusFirstInput(){
+    const inputsSelector = 'button, input[type="button"], input[type="submit"], input[type="text"], input[type="number"]'
+    const element = document.querySelector(inputsSelector)
+    if (element) element.focus()
+  }
+
   render(){
     window.localStorage.setItem(1, this.props.game)
 
     const { emit, game } = this.props
     return <div className="Gameboard">
-      <div><ResetButton emit={emit} /></div>
+      <EndgameModal emit={emit} game={game} />
       <Dealer emit={emit} game={game} />
       <div className="Gameboard-spacer" />
       <Players emit={emit} game={game} />
-      <EndgameModal emit={emit} game={game} />
+      <ResetButton emit={emit} className="Gameboard-reset-button" />
     </div>
   }
 }
@@ -176,7 +189,7 @@ class BetForm extends Component {
   render(){
     var {player} = this.props
     return <form onSubmit={this.placeBet}>
-      <input ref="bet" type="number" defaultValue="1" min="0" max={player.wallet} />
+      <input className="bet-input" ref="bet" type="number" defaultValue="1" min="0" max={player.wallet} />
       <button type="submit">Bet</button>
     </form>
   }
@@ -217,15 +230,11 @@ class EndgameModal extends Component {
   }
 
   render(){
-    const { game } = this.props
+    const { emit, game } = this.props
     if (!game.round.isOver) return null;
-    // const content = (game.playersWithMoney().length === 0) ?
-    //   <h1>House took all your cash. MUHAHAHAHAAA <strong> Get out!</strong></h1> :
-    //   <button onClick={this.newRound}>Play Another Round</button>
-    const content = <button onClick={this.newRound}>Play Another Round</button>
-
     return <div className="Gameboard-endgame-modal">
-      {content}
+      <button onClick={this.newRound}>Play Another Round</button>
+      <div><ResetButton emit={emit} /></div>
     </div>
   }
 }
