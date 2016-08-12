@@ -94,7 +94,7 @@ const Hands = function({ emit, game, player }){
 class Hand extends Component {
   render(){
     const { emit, game, hand } = this.props
-    const hideFirst = false // !game.round.isOver && game.round.currentHand() !== hand
+    const hideFirst = !game.round.isOver && game.round.actionHandId !== hand.id
     return <div className="Gameboard-hand">
       <div><strong>Bet: </strong><Money dollars={hand.bet} /></div>
       <div><strong>Value: </strong>{hand.value}</div>
