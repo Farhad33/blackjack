@@ -10,10 +10,10 @@ export default class BlackjackGame extends Component {
   }
 
   render() {
-    const { game } = this.props
+    const { game, emit } = this.props
     const content = !game.setup ?
-      <Setup game={game} /> :
-      <Gameboard game={game} />
+      <Setup game={game} emit={emit} /> :
+      <Gameboard game={game} emit={emit} />
 
     return <div className="BlackjackGame">
       {content}
