@@ -112,7 +112,7 @@ const ACTIONS = {
     if (round.playersWhoHaveBet.length - round.players.length === 0){
       round.hands = _.sortBy(hands, 'playerId');
       dealCards()
-      nextPlayer()
+      nextHand()
     }
   },
 
@@ -120,12 +120,12 @@ const ACTIONS = {
     raiseIfNotActionHand(handId)
     var hand = game.findHand(handId)
     addCardToHand(hand)
-    if (hand.isBust) nextPlayer()
+    if (hand.isBust) nextHand()
   },
 
   stayHand({handId}){
     raiseIfNotActionHand(handId)
-    nextPlayer()
+    nextHand()
   },
 
   playAnotherRound(){
@@ -166,7 +166,7 @@ const startNewRound = function(){
   }
 }
 
-const nextPlayer = function(){
+const nextHand = function(){
   if (!('actionHandIndex' in game.state.round)){
     game.state.round.actionHandIndex = 0
   }else{
@@ -247,6 +247,10 @@ const endRound = function(){
   game.state.playersWhoHaveMoneyLeft = game.state.players
     .filter(player => player.wallet > 0)
     .map(player => player.id)
+
+  if (game.state.players.every(player => player.isAi)){
+    game.emit({type:'playAnotherRound'})
+  }
 }
 
 const dealCards = function(){

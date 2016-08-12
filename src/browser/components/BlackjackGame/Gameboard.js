@@ -14,7 +14,7 @@ export default class Gameboard extends Component {
 
     const { emit, game } = this.props
     return <div className="Gameboard">
-      <ResetButton emit={emit} />
+      <div><ResetButton emit={emit} /></div>
       <Dealer emit={emit} game={game} />
       <div className="Gameboard-spacer" />
       <Players emit={emit} game={game} />
