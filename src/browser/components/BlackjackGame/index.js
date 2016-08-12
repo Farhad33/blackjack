@@ -26,9 +26,10 @@ export default class BlackjackGame extends Component {
 
 class Gameover extends Component {
   render(){
-    return <div>
-      <h1>Game Over</h1>
-      <ResetButton emit={this.props.emit} />
+    return <div className="BlackjackGame-gameover">
+      <h1>Game Over :(</h1>
+      <h4>Thanks for all the cash</h4>
+      <ResetButton emit={this.props.emit} value="New Game" />
     </div>
   }
 }
