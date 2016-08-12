@@ -10,10 +10,10 @@ It helps to improve javascript and React skills.
 
 
 - [X] Multiple local players
-- [ ] Multiple AI players
-- [ ] AI Dealer
+- [X] Multiple AI players
+- [X] AI Dealer
 - [X] Web interface, using React
-- [ ] Game state saved in local storage
+- [X] Game state saved in local storage
 - [X] Cards flip over
 - [X] The artifact produced is properly licensed, preferably with the [MIT license][mit-license].
 
