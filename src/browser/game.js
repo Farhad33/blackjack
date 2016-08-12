@@ -248,9 +248,9 @@ const endRound = function(){
     .filter(player => player.wallet > 0)
     .map(player => player.id)
 
-  if (game.state.players.every(player => player.isAi)){
-    game.emit({type:'playAnotherRound'})
-  }
+  // if (game.state.players.every(player => player.isAi)){
+  //   game.emit({type:'playAnotherRound'})
+  // }
 }
 
 const dealCards = function(){
