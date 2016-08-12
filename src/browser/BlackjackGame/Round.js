@@ -9,14 +9,57 @@ export default class Round {
     this.game = options.game;
 
     this.dealersHand = new Hand({});
-    this.outPlayers = this.game.players.filter(player => player.wallet <= 0)
+    this.outPlayerIds = this.game.players.filter(player => player.wallet <= 0).map(player => player.id)
     this.hands = []
     this.currentHandIndex = null;
+
+
+    this.aiPlayers().forEach(aiPlayer => {
+      this.setPlayerBet(aiPlayer, aiPlayer.getBet())
+    })
 
     // collects bets AKA who is in the round
     // deal two cards to each Hand
     // let each player take actions her hand
     // complete
+  }
+
+  toState(){
+    var state = {}
+    state.isOver           = this.isOver;
+    state.dealersHand      = this.dealersHand.toState();
+    state.outPlayerIds     = this.outPlayerIds;
+    state.hands            = this.hands.map(hand => hand.toState())
+    state.currentHandIndex = this.currentHandIndex;
+    return state;
+  }
+
+  static fromState(state){
+    state.dealersHand.game = state.game
+    
+    var round = Object.create(this.prototype);
+    round.game             = state.game
+    round.isOver           = state.isOver
+    round.dealersHand      = Hand.fromState(state.dealersHand)
+    round.outPlayerIds     = state.outPlayerIds
+    round.hands            = state.hands.map(handState => {
+      handState.game = state.game
+      return Hand.fromState(handState)
+    })
+    round.currentHandIndex = state.currentHandIndex
+    return round;
+  }
+
+  aiPlayers(){
+    return this.game.players.filter(player => player.isAi)
+  }
+
+  humanPlayers(){
+    return this.game.players.filter(player => !player.isAi)
+  }
+
+  playerIsOut(player){
+    return this.outPlayerIds.includes(player.id)
   }
 
   handsForPlayer(player){
@@ -34,22 +77,22 @@ export default class Round {
       player.wallet -= bet
       this.hands.push(hand)
     }else{
-      this.outPlayers.push(player)
+      this.outPlayerIds.push(player.id)
     }
 
     if (this.allPlayersHaveBet()){
       this.hands = _.sortBy(this.hands, hand => this.game.players.indexOf(hand.player));
       this.dealTwoCardsToEachHand()
-      this.currentHandIndex = 0;
+      this.nextHandsTurn()
     }
 
-    this.game.onChange()
+    this.game.reportChange()
     return this;
   }
 
   playerHasBet(player){
     return (
-      this.outPlayers.includes(player) ||
+      this.outPlayerIds.includes(player.id) ||
       this.hands.some(hand => hand.player === player)
     )
   }
@@ -71,77 +114,90 @@ export default class Round {
   }
 
   currentHand(){
-    return this.currentHandIndex === null ?
-      false : this.hands[this.currentHandIndex]
+    return this.hands[this.currentHandIndex]
   }
 
-  isPlayersTurn(player){
-    var hand = this.currentHand()
-    return hand && hand.player === player
+  isHandsTurn(hand){
+    return this.currentHand() === hand
   }
 
-  endPlayersTurn(){
-    // are we the last player?
-    if (this.currentHandIndex === (this.hands.length-1)){
+  nextHandsTurn(){
+    // first hands turn
+    if (this.currentHandIndex === null){
+      this.currentHandIndex = 0
+    
+    // last hand just finished its turn
+    }else if (this.currentHandIndex === (this.hands.length-1)){
       this.dealersTurn()
+      this.endRound()
       delete this.currentHandIndex
 
-    // go to the next player
+    // go to the next hand
     }else{
       this.currentHandIndex++
     }
+
+    var currentHand = this.currentHand()
+    if (currentHand && currentHand.player.isAi){
+      while(this.isHandsTurn(currentHand)){
+        currentHand.player.takeActionsForHand(this, currentHand)
+      }
+    }
   }
 
-  hitPlayer(player){
-    if (!this.isPlayersTurn(player)){
+  hitHand(hand){
+    if (!this.isHandsTurn(hand)){
       throw new Error('illegal move')
     }
     var hand = this.currentHand()
     hand.cards.push(this.game.deck.takeOne())
 
     if (hand.isBust()){
-      this.endPlayersTurn()
+      this.nextHandsTurn()
     }
 
-    this.game.onChange();
+    this.game.reportChange();
     return this;
   }
 
-  stayPlayer(player){
-    if (!this.isPlayersTurn(player)){
+  stayHand(hand){
+    if (!this.isHandsTurn(hand)){
       throw new Error('illegal move')
     }
-    this.endPlayersTurn()
-    this.game.onChange();
+    this.nextHandsTurn()
+    this.game.reportChange();
     return this;
   }
 
   dealersTurn(){
-    const hand = this.dealersHand
-
     var activeHands = this.hands.filter(hand => !hand.isBust())
+    if (activeHands.length === 0) return; // all players busted, do nothing
     var biggestBetHand = _.sortBy(activeHands, hand => hand.bet).reverse()[0]
-    var minOponentValue = Hand.value(biggestBetHand.cards.slice(1)) + 1
-      // .map(hand => Hand.value(hand.cards.slice(1)) + 1)
+    var minOponentValue = Hand.cardsValue(biggestBetHand.cards.slice(1)) + 1
+      // .map(hand => Hand.cardsValue(hand.cards.slice(1)) + 1)
       // .sort().reverse()[0]
 
     if (minOponentValue < 14) minOponentValue = 14
 
     console.log('Dealer Logic', {
       biggestBetHand: biggestBetHand,
-      minOponentValue: minOponentValue
+      minOponentValue: minOponentValue,
+      HandValue: this.dealersHand.value()
     })
 
-    while(!hand.isBust()){
-      if (hand.value() < minOponentValue){
+    while(!this.dealersHand.isBust()){
+      if (
+        (this.dealersHand.value() < minOponentValue) ||
+        ((biggestBetHand.cards.length === 2) && (minOponentValue >= 10) && (this.dealersHand.value() < 17))
+      ){
         // hit
-        hand.cards.push(this.game.deck.takeOne())
-      }else{
-        break
+        this.dealersHand.cards.push(this.game.deck.takeOne())
+      }
+      else{
+        // Staying
+        return
       }
     }
-
-    this.endRound()
   }
 
   endRound(){

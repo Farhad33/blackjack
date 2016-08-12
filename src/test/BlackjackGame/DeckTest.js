@@ -10,6 +10,12 @@ describe('BlackjackGame.Deck', ()=>{
     expect(deck.cards.length).to.equal(52)
   })
 
+  it('should be shuffled', ()=>{
+    var deck = new Deck
+    var cardsAsString = deck.cards.map(card => `${card.rank}${card.suit}`).join('')
+    expect(cardsAsString).to.not.equal('2♠3♠4♠5♠6♠7♠8♠9♠10♠A♠J♠Q♠K♠2♦3♦4♦5♦6♦7♦8♦9♦10♦A♦J♦Q♦K♦2♣3♣4♣5♣6♣7♣8♣9♣10♣A♣J♣Q♣K♣2♥3♥4♥5♥6♥7♥8♥9♥10♥A♥J♥Q♥K♥')
+  })
+
   it("should add 52 cards for every player", ()=> {
     var deck = new Deck
     expect(deck.cards.length).to.equal(52)

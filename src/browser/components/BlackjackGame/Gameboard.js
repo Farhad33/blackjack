@@ -3,10 +3,14 @@ import Money from '../Money'
 import Card from '../Card'
 
 export default class Gameboard extends Component {
+
   static propTypes = {
     game: React.PropTypes.object.isRequired,
   }
+
   render(){
+    window.localStorage.setItem(1, this.props.game)
+
     const { game } = this.props
     return <div className="Gameboard">
       <Dealer game={game} />
@@ -32,12 +36,12 @@ class Players extends Component {
 class Player extends Component {
   render(){
     const { game, player } = this.props
-    const outThisRound = game.round.outPlayers.includes(player)
+    const playerIsOut = game.round.playerIsOut(player)
     if (!game.round.playerHasBet(player)){
       var betForm = <BetForm player={player} />
     }
     let className = "Gameboard-player"
-    if (outThisRound) className += ' Gameboard-out-this-round'
+    if (playerIsOut) className += ' Gameboard-out-this-round'
     return <div className={className}>
       <Hands player={player} />
       <div>{betForm}</div>
@@ -108,12 +112,12 @@ class HandActions extends Component {
   hit(event){
     event.preventDefault()
     const { game, hand } = this.props
-    game.round.hitPlayer(hand.player)
+    game.round.hitHand(hand)
   }
   stay(event){
     event.preventDefault()
     const { game, hand } = this.props
-    game.round.stayPlayer(hand.player)
+    game.round.stayHand(hand)
   }
   render(){
     const { game, hand } = this.props
@@ -175,8 +179,9 @@ const DealersHand = function({game}){
   var busted = hand.isBust() ? 
     <div className="Gameboard-hand-banner">BUSTED</div> : null
 
+  var value = game.round.isOver ? <div><strong>Value: </strong>{hand.value()}</div> : null
   return <div className="Gameboard-DealersHand">
-    <div><strong>Value: </strong>{hand.value()}</div>
+    {value}
     <Cards cards={hand.cards} hideFirst={!game.round.isOver} />
     {busted}
   </div>
@@ -199,8 +204,12 @@ class EndgameModal extends Component {
   render(){
     const { game } = this.props
     if (!game.round.isOver) return null;
-    return <div className="Gameboard-endgame-modal">
+    const content = (game.playersWithMoney().length === 0) ?
+      <h1>House took all your cash. MUHAHAHAHAAA <strong> Get out!</strong></h1> :
       <button onClick={this.newRound}>Play Another Round</button>
+
+    return <div className="Gameboard-endgame-modal">
+      {content}
     </div>
   }
 }

@@ -14,6 +14,7 @@ export default class BlackjackGame extends Component {
     const content = !game.setup ?
       <Setup game={game} /> :
       <Gameboard game={game} />
+
     return <div className="BlackjackGame">
       {content}
     </div>

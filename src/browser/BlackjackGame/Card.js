@@ -6,13 +6,29 @@ export default class Card {
   }
 
   isAce(){
-    return this.rank === 'ace'
+    return this.rank === 'A'
+  }
+
+  toState(){
+    return {
+      rank: this.rank,
+      suit: this.suit,
+      value: this.value,
+    }
+  }
+
+  static fromState(state){
+    var card = Object.create(this.prototype)
+    card.rank = state.rank
+    card.suit = state.suit
+    card.value = state.value
+    return card
   }
 }
 
 Card.SUITS = ['♠', '♦', '♣', '♥']
 Card.VALUES = {
-  'ace': 11,
+  'A': 11,
   '2': 2,
   '3': 3,
   '4': 4,
@@ -22,8 +38,8 @@ Card.VALUES = {
   '8': 8,
   '9': 9,
   '10': 10,
-  'king': 10,
-  'queen': 10,
-  'jack': 10,
+  'J': 10,
+  'Q': 10,
+  'K': 10,
 }
 Card.RANKS = Object.keys(Card.VALUES)
