@@ -1,5 +1,17 @@
 .BlackjackGame
   height: 100%
+
+  &-setup
+  &-setup-players
+    display: flex
+    flex-direction: column
+  &-setup-player
+    display: flex
+    flex-direction: row
+  &-setup-player-title
+    flex-basis: 200px
+    text-align: right
+    padding-right: 1em
   
   .Gameboard
     min-height: 100%
@@ -64,3 +76,5 @@
       display: flex
       align-items: center
       justify-content: center
+      h1
+        color: red

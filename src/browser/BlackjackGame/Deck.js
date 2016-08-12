@@ -16,15 +16,27 @@ export default class Deck {
       numberOfPlayer -= 2
     }while(numberOfPlayer > 0)
 
-    this.shuffle();
+    this.shuffle()
   }
 
   shuffle(){
-    _.shuffle(this.cards)
+    this.cards = _.shuffle(this.cards)
     return this;
   }
 
   takeOne(){
     return this.cards.shift();
+  }
+
+  toState(){
+    return {
+      cards: this.cards.map(card => card.toState())
+    }
+  }
+
+  static fromState(state){
+    var deck = Object.create(this.prototype)
+    deck.cards = state.cards.map(cardState => Card.fromState(cardState))
+    return deck;
   }
 }

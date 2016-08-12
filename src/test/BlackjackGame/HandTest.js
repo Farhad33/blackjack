@@ -21,36 +21,36 @@ describe('BlackjackGame.Hand', ()=>{
       expect(hand.value()).to.equal(15)
 
       hand.cards = [
-        new Card('ace', '♥'),
-        new Card('king', '♥'),
+        new Card('A', '♥'),
+        new Card('K', '♥'),
       ]
       expect(hand.value()).to.equal(21)
 
       hand.cards = [
         new Card('2', '♥'),
-        new Card('ace', '♥'),
-        new Card('king', '♥'),
+        new Card('A', '♥'),
+        new Card('K', '♥'),
       ]
       expect(hand.value()).to.equal(13)
 
       hand.cards = [
-        new Card('ace', '♥'),
-        new Card('ace', '♥'),
-        new Card('king', '♥'),
+        new Card('A', '♥'),
+        new Card('A', '♥'),
+        new Card('K', '♥'),
       ]
       expect(hand.value()).to.equal(12)
 
       hand.cards = [
-        new Card('king', '♥'),
-        new Card('ace', '♥'),
-        new Card('ace', '♥'),
+        new Card('K', '♥'),
+        new Card('A', '♥'),
+        new Card('A', '♥'),
       ]
       expect(hand.value()).to.equal(12)
 
       hand.cards = [
-        new Card('ace', '♥'),
-        new Card('king', '♥'),
-        new Card('ace', '♥'),
+        new Card('A', '♥'),
+        new Card('K', '♥'),
+        new Card('A', '♥'),
       ]
       expect(hand.value()).to.equal(12)
     })
