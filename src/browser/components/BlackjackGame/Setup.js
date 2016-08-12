@@ -63,28 +63,40 @@ export default class Setup extends Component {
 
     const players = this.props.game.players.map((player, index) => {
       const id="BlackjackGame-setup-player-"+index
-      return <li key={index} className="BlackjackGame-setup-player">
-        <label htmlFor={id} className="BlackjackGame-setup-player-title">
-          <strong>{player.isAi ? 'Ai' : 'Human'} Player</strong>
-        </label>
-        <input id={id} type="text" value={player.name} onChange={this.onNameChange.bind(this, player.id)}/>
-        <input type="number" value={player.wallet} onChange={this.onWalletChange.bind(this, player.id)}/>
-        <button type="button" onClick={this.removePlayer.bind(this, player.id)} tabIndex="-1">X</button>
+      return <li key={index}>
+        <div className="BlackjackGame-setup-player">
+          <label htmlFor={id} className="BlackjackGame-setup-player-title">
+            <strong>{player.isAi ? 'Ai' : 'Human'} Player</strong>
+          </label>
+          <input id={id} type="text" value={player.name} onChange={this.onNameChange.bind(this, player.id)}/>
+          <input type="number" value={player.wallet} onChange={this.onWalletChange.bind(this, player.id)}/>
+          <button type="button" onClick={this.removePlayer.bind(this, player.id)} tabIndex="-1">X</button>
+        </div>
       </li>
     })
 
-    return <form onSubmit={this.onSubmit.bind(this)} className="BlackjackGame-setup">
-      <div>
-        <button type="button" onClick={this.addHumanPlayer}>Add Human Player</button>
-        <button type="button" onClick={this.addAiPlayer}>Add Ai Player</button>
-      </div>
-      <ol className="BlackjackGame-setup-players">
-        {players}
-      </ol>
-      <div>
-        <input type="submit" value="Play" />
-      </div>
-    </form>
+    return <div className="BlackjackGame-setup">
+      <form onSubmit={this.onSubmit.bind(this)}>
+        <h1>Blackjack</h1>
+        <div className="BlackjackGame-setup-buttons">
+          <button type="button" onClick={this.addHumanPlayer}>Add Human Player</button>
+          <button type="button" onClick={this.addAiPlayer}>Add Ai Player</button>
+        </div>
+        <h3>Players:</h3>
+        <ol className="BlackjackGame-setup-players">
+          <li>
+            <div className="BlackjackGame-setup-player">
+              <strong className="BlackjackGame-setup-name">Name</strong>
+              <strong className="BlackjackGame-setup-wallet">Wallet</strong>
+            </div>
+          </li>
+          {players}
+        </ol>
+        <div>
+          <input type="submit" value="Play" />
+        </div>
+      </form>
+    </div>
   }
 }
 

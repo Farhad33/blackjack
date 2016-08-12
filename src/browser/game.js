@@ -74,7 +74,9 @@ const ACTIONS = {
   },
 
   removePlayer({playerId}){
-    game.state.players.splice(playerId, 1)
+    const player = game.findPlayer(playerId)
+    const index = game.state.players.indexOf(player)
+    game.state.players.splice(index, 1)
   },
 
   updatePlayer({playerId, updates}){
@@ -105,7 +107,7 @@ const ACTIONS = {
         isAi: player.isAi,
       })
     }else{
-      round.players.splice(round.players.indexOf(playerId), 1)
+      round.players.splice(game.state.players.indexOf(game.findPlayer(playerId)), 1)
     }
     round.playersWhoHaveBet.push(playerId)
 

@@ -19,7 +19,10 @@ export default class Gameboard extends Component {
   focusFirstInput(){
     const inputsSelector = 'button, input[type="button"], input[type="submit"], input[type="text"], input[type="number"]'
     const element = document.querySelector(inputsSelector)
-    if (element) element.focus()
+    if (element) {
+      element.focus()
+      if (element.select) element.select()
+    }
   }
 
   render(){
@@ -31,7 +34,7 @@ export default class Gameboard extends Component {
       <Dealer emit={emit} game={game} />
       <div className="Gameboard-spacer" />
       <Players emit={emit} game={game} />
-      <ResetButton emit={emit} className="Gameboard-reset-button" />
+      <ResetButton emit={emit} className="Gameboard-reset-button" value="End Game" />
     </div>
   }
 }
