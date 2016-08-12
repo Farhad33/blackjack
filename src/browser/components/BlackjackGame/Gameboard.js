@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Money from '../Money'
 import Card from '../Card'
+import ResetButton from './ResetButton'
 
 export default class Gameboard extends Component {
 
@@ -13,6 +14,7 @@ export default class Gameboard extends Component {
 
     const { emit, game } = this.props
     return <div className="Gameboard">
+      <ResetButton emit={emit} />
       <Dealer emit={emit} game={game} />
       <div className="Gameboard-spacer" />
       <Players emit={emit} game={game} />
@@ -20,6 +22,8 @@ export default class Gameboard extends Component {
     </div>
   }
 }
+
+
 
 
 class Players extends Component {
@@ -36,9 +40,9 @@ class Players extends Component {
 class Player extends Component {
   render(){
     const { emit, game, player } = this.props
-    const playerIsOut = game.round.playersOutThisRound.includes(player.id)
+    const playerIsOut = !game.round.players.includes(player.id)
     const playerHasBet = game.round.playersWhoHaveBet.includes(player.id)
-    if (!playerHasBet){
+    if (!player.isAi && !playerIsOut && !playerHasBet){
       var betForm = <BetForm emit={emit} player={player} />
     }
     let className = "Gameboard-player"
@@ -93,7 +97,7 @@ class HandBanner extends Component {
       if (hand.result === 'win'){
         banner = 'WINNER'
       }else if (hand.result === 'loss'){
-        banner = 'LOOSER'
+        banner = 'LOSER'
       }else if (hand.result === 'push'){
         banner = 'PUSH'
       }
@@ -128,7 +132,7 @@ class HandActions extends Component {
   }
   render(){
     const { game, hand } = this.props
-    if (game.round.actionHandId !== hand.id) return null
+    if (hand.isAi || game.round.actionHandId !== hand.id) return null
     return <div className="Gameboard-hand-actions">
       <button onClick={this.hit}>Hit</button>
       <button onClick={this.stay}>Stay</button>
@@ -209,16 +213,16 @@ class EndgameModal extends Component {
   }
 
   newRound(){
-    const { game } = this.props
-    game.playAnotherRound();
+    this.props.emit({type: 'playAnotherRound'})
   }
 
   render(){
     const { game } = this.props
     if (!game.round.isOver) return null;
-    const content = (game.playersWithMoney().length === 0) ?
-      <h1>House took all your cash. MUHAHAHAHAAA <strong> Get out!</strong></h1> :
-      <button onClick={this.newRound}>Play Another Round</button>
+    // const content = (game.playersWithMoney().length === 0) ?
+    //   <h1>House took all your cash. MUHAHAHAHAAA <strong> Get out!</strong></h1> :
+    //   <button onClick={this.newRound}>Play Another Round</button>
+    const content = <button onClick={this.newRound}>Play Another Round</button>
 
     return <div className="Gameboard-endgame-modal">
       {content}

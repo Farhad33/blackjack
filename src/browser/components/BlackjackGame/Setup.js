@@ -28,27 +28,27 @@ export default class Setup extends Component {
     })
   }
 
-  removePlayer(playerIndex, event){
+  removePlayer(playerId, event){
     event.preventDefault()
     this.props.emit({
       type: 'removePlayer',
-      playerIndex: playerIndex,
+      playerId: playerId,
     })
   }
 
-  onNameChange(playerIndex, event){
+  onNameChange(playerId, event){
     event.preventDefault()
     this.props.emit({
       type: 'updatePlayer',
-      playerIndex: playerIndex, 
+      playerId: playerId, 
       updates: {name: event.target.value},
     })
   }
-  onWalletChange(playerIndex, event){
+  onWalletChange(playerId, event){
     event.preventDefault()
     this.props.emit({
       type: 'updatePlayer',
-      playerIndex: playerIndex, 
+      playerId: playerId, 
       updates: {wallet: event.target.value},
     })
   }
@@ -67,9 +67,9 @@ export default class Setup extends Component {
         <label htmlFor={id} className="BlackjackGame-setup-player-title">
           <strong>{player.isAi ? 'Ai' : 'Human'} Player</strong>
         </label>
-        <input id={id} type="text" value={player.name} onChange={this.onNameChange.bind(this, index)}/>
-        <input type="number" value={player.wallet} onChange={this.onWalletChange.bind(this, index)}/>
-        <button type="button" onClick={this.removePlayer.bind(this, index)} tabIndex="-1">X</button>
+        <input id={id} type="text" value={player.name} onChange={this.onNameChange.bind(this, player.id)}/>
+        <input type="number" value={player.wallet} onChange={this.onWalletChange.bind(this, player.id)}/>
+        <button type="button" onClick={this.removePlayer.bind(this, player.id)} tabIndex="-1">X</button>
       </li>
     })
 
